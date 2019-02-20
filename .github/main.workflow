@@ -6,7 +6,9 @@ workflow "Deploy on Heroku" {
 action "login" {
   uses = "actions/heroku@master"
   args = "container:login"
-  secrets = ["HEROKU_API_KEY"]
+  secrets = [
+    "HEROKU_API_KEY"
+  ]
 }
 
 action "push" {

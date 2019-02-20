@@ -16,6 +16,7 @@ action "push" {
   env = {
     HEROKU_APP = "bookstore-pedrolacerda"
   }
+  secrets = ["HEROKU_API_KEY"]
 }
 
 action "release" {

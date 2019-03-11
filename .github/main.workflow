@@ -29,7 +29,7 @@ action "release" {
   secrets = ["HEROKU_API_KEY"]
 }
 
-workflow "update boards with issues" {
+workflow "Update boards with issues" {
   on = "issues"
   resolves = ["Create Azure Boards Work Item"]
 }

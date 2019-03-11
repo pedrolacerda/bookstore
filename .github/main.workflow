@@ -28,3 +28,20 @@ action "release" {
   }
   secrets = ["HEROKU_API_KEY"]
 }
+
+workflow "update boards with issues" {
+  on = "issues"
+  resolves = ["Create Azure Boards Work Item"]
+}
+
+action "Create Azure Boards Work Item" {
+  uses = "azure/github-actions/boards@master"
+  env = {
+    AZURE_DEVOPS_URL = "https://dev.azure.com/pedrohrl1" #ADO URL
+    AZURE_DEVOPS_PROJECT = "Brown Bag"                       #ADO Project
+    AZURE_BOARDS_TYPE = "Task"                            #Board Type...this is from the ADO [proccess doc](https://docs.microsoft.com/en-us/azure/devops/boards/work-items/guidance/choose-process?view=azure-devops)
+  }
+  secrets = ["AZURE_DEVOPS_TOKEN"]
+
+  #ADO Token from your security settings
+}

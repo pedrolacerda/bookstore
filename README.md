@@ -45,4 +45,6 @@ open target/site/index.html
 Read the [CONTRIBUTING](.github/CONTRIBUTING.md) file before contributing to this project.
 
 ## License
-See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).\
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
+
+

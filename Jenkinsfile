@@ -21,7 +21,7 @@ To control which stages you want, please add an environment variable if you want
 
 Please also add the following credentials to the global domain of your organization's folder:
 - Heroku API key as secret text with ID 'HEROKU_API_KEY'
-- GitHub Token value as secret text with ID 'GITHUB_TOKEN'
+- GitHub Token value as secret text with ID 'GITHUB_TOKEN_PEDROLACERDA'
 
 */
 
@@ -107,8 +107,8 @@ def sonar() {
     echo "PR-No: ${prNo}"
     // requires SonarQube Scanner 2.8+
     mvn 'org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true -Pcoverage-per-test'
-    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
-        githubToken=env.GITHUB_TOKEN
+    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN_PEDROLACERDA', variable: 'GITHUB_TOKEN']]) {
+        githubToken=env.GITHUB_TOKEN_PEDROLACERDA
         withSonarQubeEnv('SonarQube Octodemoapps') {
             mvn "-Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${prNo} -Dsonar.github.oauth=${githubToken} -Dsonar.github.repository=LacerdaCorp/reading-time-demo -Dsonar.github.endpoint=https://octodemo.com/api/v3/ org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar"
             mvn "org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar"
@@ -189,12 +189,12 @@ def production() {
 }
 
 void createRelease(tagName, createdAt) {
-    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
+    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN_PEDROLACERDA', variable: 'GITHUB_TOKEN']]) {
         def body = "**Created at:** ${createdAt}\n**Deployment job:** [${env.BUILD_NUMBER}](${env.BUILD_URL})\n**Environment:** [${env.HEROKU_PRODUCTION}](https://dashboard.heroku.com/apps/${env.HEROKU_PRODUCTION})"
         def payload = JsonOutput.toJson(["tag_name": "v${tagName}", "name": "${env.HEROKU_PRODUCTION} - v${tagName}", "body": "${body}"])
         def apiUrl = "https://octodemo.com/api/v3/repos/${getRepoSlug()}/releases"
         echo "apiUrl: ${apiUrl}"
-        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
+        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN_PEDROLACERDA}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
     }
 }
 
@@ -305,10 +305,10 @@ def getBranch() {
 }
 
 def createDeployment(ref, environment, description) {
-    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
+    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN_PEDROLACERDA', variable: 'GITHUB_TOKEN']]) {
         def payload = JsonOutput.toJson(["ref": "${ref}", "description": "${description}", "environment": "${environment}", "required_contexts": []])
         def apiUrl = "https://octodemo.com/api/v3/repos/${getRepoSlug()}/deployments"
-        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
+        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN_PEDROLACERDA}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
         def jsonSlurper = new JsonSlurper()
         def data = jsonSlurper.parseText("${response}")
         return data.id
@@ -316,11 +316,11 @@ def createDeployment(ref, environment, description) {
 }
 
 void setDeploymentStatus(deploymentId, state, targetUrl, description) {
-    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
+    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN_PEDROLACERDA', variable: 'GITHUB_TOKEN']]) {
         def payload = JsonOutput.toJson(["state": "${state}", "target_url": "${targetUrl}", "description": "${description}"])
         def apiUrl = "https://octodemo.com/api/v3/repos/${getRepoSlug()}/deployments/${deploymentId}/statuses"
         echo "apiURL ${apiUrl}"
-        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
+        def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN_PEDROLACERDA}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '${payload}' ${apiUrl}").trim()
     }
 }
 

@@ -45,3 +45,8 @@ action "Create Azure Boards Work Item" {
 
   #ADO Token from your security settings
 }
+
+workflow "Deploy on Heroku" {
+  resolves = ["release"]
+  on = "push"
+}

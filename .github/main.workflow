@@ -46,7 +46,11 @@ action "Create Azure Boards Work Item" {
   #ADO Token from your security settings
 }
 
-workflow "Deploy on Heroku" {
-  resolves = ["release"]
+workflow "Deploy using Terraform" {
+  resolves = ["Deploy AWS"]
   on = "push"
+}
+
+action "Deploy AWS"{
+  
 }

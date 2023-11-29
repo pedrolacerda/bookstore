@@ -9,7 +9,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <tomcat.version>8.5.63</tomcat.version>
+        <tomcat.version>8.5.96</tomcat.version>
         <github.global.host>https://octodemo.com/api/v3</github.global.host>
         <github.global.oauth2Token>${env.TOKEN}</github.global.oauth2Token>
         <checkstyle.version>8.29</checkstyle.version>
